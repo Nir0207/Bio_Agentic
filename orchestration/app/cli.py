@@ -10,6 +10,7 @@ from langgraph.types import Command
 from orchestration.app.config import get_settings
 from orchestration.app.graph_builder import build_graph, build_runtime, verify_upstream_dependencies
 from orchestration.app.logging import configure_logging
+from orchestration.app.seed_data import seed_sample_graph
 from orchestration.app.state import initialize_state
 from orchestration.tools.evidence_tools import ProvenanceRequest
 from orchestration.tools.neo4j_tools import PathwayContextRequest, SimilarEntitiesRequest, SubgraphRequest
@@ -18,7 +19,9 @@ from orchestration.tools.semantic_search_tools import EvidenceSearchRequest, Pub
 
 app = typer.Typer(add_completion=False, help="LangGraph orchestration phase for graph + semantic + score evidence assembly.")
 run_app = typer.Typer(add_completion=False)
+bootstrap_app = typer.Typer(add_completion=False)
 app.add_typer(run_app, name="run")
+app.add_typer(bootstrap_app, name="bootstrap")
 
 
 @run_app.command("query")
@@ -147,6 +150,30 @@ def validate_tools(text: str = typer.Option("EGFR pathway evidence", "--text")) 
         }
 
         typer.echo(json.dumps(validations, indent=2))
+    finally:
+        runtime.close()
+
+
+@bootstrap_app.command("sample-db")
+def bootstrap_sample_db() -> None:
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    runtime = build_runtime(settings)
+
+    try:
+        result = seed_sample_graph(runtime.neo4j_service, sample_query=settings.sample_query)
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "connected_after_attempts": result.attempts,
+                    "entity_counts": result.created_entities,
+                    "neo4j_uri": settings.neo4j_uri,
+                    "neo4j_database": settings.neo4j_database,
+                },
+                indent=2,
+            )
+        )
     finally:
         runtime.close()
 

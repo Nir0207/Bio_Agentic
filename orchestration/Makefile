@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: install test run-sample run-query run-all inspect validate-tools docker-build docker-run
+.PHONY: install test run-sample run-query run-all inspect validate-tools bootstrap-sample-db docker-build docker-run docker-up docker-down
 
 install:
 	$(PYTHON) -m pip install -e ".[dev]"
@@ -23,8 +23,17 @@ inspect:
 validate-tools:
 	$(PYTHON) -m orchestration.app.cli validate-tools
 
+bootstrap-sample-db:
+	$(PYTHON) -m orchestration.app.cli bootstrap sample-db
+
 docker-build:
-	docker compose build orchestration
+	docker compose build
 
 docker-run:
 	docker compose run --rm orchestration
+
+docker-up:
+	docker compose up --build --abort-on-container-exit --exit-code-from orchestration
+
+docker-down:
+	docker compose down -v

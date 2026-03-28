@@ -28,7 +28,8 @@ Neo4j remains the primary graph datastore.
 Start from `orchestration/.env.example`.
 
 Key defaults:
-- `NEO4J_URI=bolt://host.docker.internal:7688`
+- `NEO4J_URI=bolt://neo4j:7687` (inside compose network)
+- host-exposed Neo4j bolt: `localhost:7688`
 - `NEO4J_DATABASE=neo4j`
 - `SEMANTIC_RETRIEVAL_MODE=keyword`
 - `MODEL_SCORE_SOURCE=neo4j_property`
@@ -71,20 +72,22 @@ python -m orchestration.app.cli run query \
 
 ## Docker usage
 
-This folder has its own Docker context and one service only (`orchestration`).
+This folder has its own Docker context and runs:
+- `neo4j` (local graph DB for orchestration)
+- `orchestration` (bootstrap + orchestration flow runner)
 
 ```bash
 cd orchestration
 cp .env.example .env
 
-docker compose build orchestration
-docker compose run --rm orchestration
+docker compose up --build --abort-on-container-exit --exit-code-from orchestration
 ```
 
-Default container command:
+Default orchestration container command:
 
 ```bash
-python -m orchestration.app.cli run sample
+python -m orchestration.app.cli bootstrap sample-db && \
+python -m orchestration.app.cli run sample --review-action continue
 ```
 
 The compose file includes:
@@ -92,4 +95,4 @@ The compose file includes:
 - `extra_hosts: host.docker.internal:host-gateway`
 - `.env` loading
 
-This folder does **not** start Neo4j or MLflow by default.
+This folder does **not** start MLflow.

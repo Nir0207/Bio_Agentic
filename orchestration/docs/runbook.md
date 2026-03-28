@@ -8,6 +8,24 @@ python -m pip install -e ".[dev]"
 python -m orchestration.app.cli run sample
 ```
 
+## Docker end-to-end (with local Neo4j)
+
+```bash
+cd orchestration
+cp .env.example .env
+docker compose up --build --abort-on-container-exit --exit-code-from orchestration
+```
+
+Manual staged run:
+
+```bash
+cd orchestration
+docker compose up -d neo4j
+docker compose run --rm orchestration python -m orchestration.app.cli bootstrap sample-db
+docker compose run --rm orchestration python -m orchestration.app.cli validate-tools --text "EGFR pathway evidence"
+docker compose run --rm orchestration python -m orchestration.app.cli run sample --review-action continue
+```
+
 ## Inspect state transitions
 
 ```bash
