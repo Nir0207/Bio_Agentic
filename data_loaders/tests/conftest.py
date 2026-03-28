@@ -24,5 +24,8 @@ def make_settings(tmp_path: Path, **overrides) -> Settings:
     settings.bronze_dir.mkdir(parents=True, exist_ok=True)
     settings.silver_dir.mkdir(parents=True, exist_ok=True)
     settings.gold_dir.mkdir(parents=True, exist_ok=True)
+    for source in ("uniprot", "string", "reactome", "pubmed"):
+        (settings.raw_dir / source).mkdir(parents=True, exist_ok=True)
+        (settings.bronze_dir / source).mkdir(parents=True, exist_ok=True)
+        (settings.silver_dir / source).mkdir(parents=True, exist_ok=True)
     return settings
-

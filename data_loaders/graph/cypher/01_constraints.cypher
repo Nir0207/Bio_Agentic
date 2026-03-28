@@ -26,3 +26,4 @@ CREATE INDEX publication_pmid IF NOT EXISTS
 FOR (n:Publication)
 ON (n.pmid);
 
+CALL db.awaitIndexes(300);

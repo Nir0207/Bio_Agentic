@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import subprocess
 import time
-from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import typer
@@ -11,7 +10,7 @@ from neo4j import GraphDatabase
 from app.config import get_settings
 from app.logging import configure_logging
 from graph.loader import Neo4jGraphLoader
-from graph.validate import run_validations
+from graph.validate import ValidationSummary, run_validations
 from pipelines.download.pubmed_downloader import PubMedDownloader
 from pipelines.download.reactome_downloader import ReactomeDownloader
 from pipelines.download.string_downloader import StringDownloader
@@ -107,30 +106,37 @@ def transform_gold() -> None:
 
 
 @neo4j_app.command("init")
-def neo4j_init() -> None:
+def neo4j_init(
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print actions without executing Cypher."),
+) -> None:
     settings = get_settings()
     configure_logging(settings.log_level)
-    Neo4jGraphLoader(settings).init_constraints()
+    Neo4jGraphLoader(settings).init_constraints(dry_run=dry_run)
 
 
 @neo4j_app.command("load")
-def neo4j_load() -> None:
+def neo4j_load(
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print batch plan without writing to Neo4j."),
+) -> None:
     settings = get_settings()
     configure_logging(settings.log_level)
-    Neo4jGraphLoader(settings).load_all()
+    Neo4jGraphLoader(settings).load_all(dry_run=dry_run)
 
 
 @neo4j_app.command("validate")
 def neo4j_validate() -> None:
     settings = get_settings()
     configure_logging(settings.log_level)
-    run_validations(settings)
+    summary = run_validations(settings, raise_on_critical=False)
+    _print_validation_summary(summary)
+    if summary.has_critical_issues:
+        raise typer.Exit(code=1)
 
 
 @neo4j_app.command("up")
 def neo4j_up(
     wait_seconds: int = typer.Option(120, "--wait-seconds", min=1),
-    uri: str = typer.Option("bolt://neo4j:7687", "--uri"),
+    uri: str = typer.Option("bolt://localhost:7688", "--uri"),
     username: str = typer.Option("neo4j", "--username"),
     password: str = typer.Option("neo4j-password", "--password"),
     start: bool = typer.Option(True, "--start/--no-start"),
@@ -177,7 +183,59 @@ def run_all(force: bool = typer.Option(False, "--force")) -> None:
     loader = Neo4jGraphLoader(settings)
     loader.init_constraints()
     loader.load_all()
-    run_validations(settings)
+    summary = run_validations(settings, raise_on_critical=False)
+    _print_validation_summary(summary)
+    if summary.has_critical_issues:
+        raise typer.Exit(code=1)
+
+
+@run_app.command("phase2")
+def run_phase2() -> None:
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    transform_gold()
+
+
+@run_app.command("phase3")
+def run_phase3(
+    dry_run: bool = typer.Option(False, "--dry-run", help="Run init/load in dry-run mode."),
+) -> None:
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    loader = Neo4jGraphLoader(settings)
+    loader.init_constraints(dry_run=dry_run)
+    loader.load_all(dry_run=dry_run)
+    if dry_run:
+        typer.echo("phase3 dry-run complete; validation skipped because Neo4j writes were not executed.")
+        return
+    summary = run_validations(settings, raise_on_critical=False)
+    _print_validation_summary(summary)
+    if summary.has_critical_issues:
+        raise typer.Exit(code=1)
+
+
+def _print_validation_summary(summary: ValidationSummary) -> None:
+    typer.echo("Validation Summary")
+    typer.echo("------------------")
+    for query_name, rows in summary.query_results.items():
+        typer.echo(f"{query_name}: {len(rows)} row(s)")
+    typer.echo("relationship_endpoint_integrity:")
+    for report in summary.endpoint_integrity:
+        typer.echo(
+            "  "
+            f"{report['relationship']}: "
+            f"missing_source_rows={report['missing_source_rows']}, "
+            f"missing_target_rows={report['missing_target_rows']}, "
+            f"missing_either_rows={report['missing_either_rows']}"
+        )
+    if summary.warnings:
+        typer.echo("warnings:")
+        for warning in summary.warnings:
+            typer.echo(f"  - {warning}")
+    if summary.critical_issues:
+        typer.echo("critical_issues:")
+        for issue in summary.critical_issues:
+            typer.echo(f"  - {issue}")
 
 
 def main() -> None:

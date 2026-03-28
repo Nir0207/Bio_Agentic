@@ -9,10 +9,14 @@ services:
       - ./data:/app/data
     environment:
       DATA_DIR: ${DATA_DIR:-/app/data}
-      NEO4J_URI: ${NEO4J_URI:-bolt://neo4j:7687}
+      # Default to a host Neo4j instance exposed on the custom project port.
+      NEO4J_URI: ${NEO4J_URI:-bolt://host.docker.internal:7688}
       NEO4J_USERNAME: ${NEO4J_USERNAME:-neo4j}
       NEO4J_PASSWORD: ${NEO4J_PASSWORD:-neo4j-password}
       NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      NEO4J_BATCH_SIZE: ${NEO4J_BATCH_SIZE:-2000}
+      NEO4J_MAX_RETRIES: ${NEO4J_MAX_RETRIES:-3}
+      NEO4J_RETRY_BACKOFF_SECONDS: ${NEO4J_RETRY_BACKOFF_SECONDS:-1.0}
       MAX_PUBMED_FILES: ${MAX_PUBMED_FILES:-5}
       MAX_PROTEINS: ${MAX_PROTEINS:-20000}
       STRING_SCORE_THRESHOLD: ${STRING_SCORE_THRESHOLD:-700}
