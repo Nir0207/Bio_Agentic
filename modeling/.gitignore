@@ -1,0 +1,10 @@
+.venv/
+artifacts/
+.mlruns_local/
+.mlruns_docker/
+.env
+.pytest_cache/
+*.egg-info/
+uv.lock
+__pycache__/
+*.pyc

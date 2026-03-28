@@ -1,0 +1,13 @@
+services:
+  modeling:
+    build:
+      context: ..
+      dockerfile: modeling/Dockerfile
+    working_dir: /workspace
+    env_file:
+      - .env
+    volumes:
+      - ../:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["python", "-m", "modeling.app.cli", "run", "all"]
