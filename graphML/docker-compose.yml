@@ -1,0 +1,13 @@
+services:
+  graphml:
+    build:
+      context: ..
+      dockerfile: graphML/Dockerfile
+    working_dir: /workspace
+    env_file:
+      - .env
+    volumes:
+      - ../:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["python", "-m", "graphML.app.cli", "run", "all"]
