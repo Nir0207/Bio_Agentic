@@ -1,0 +1,13 @@
+services:
+  orchestration:
+    build:
+      context: ..
+      dockerfile: orchestration/Dockerfile
+    working_dir: /workspace
+    env_file:
+      - .env
+    volumes:
+      - ../:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["python", "-m", "orchestration.app.cli", "run", "sample"]
