@@ -6,21 +6,22 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     VIRTUAL_ENV=/opt/venv \
     PATH="/opt/venv/bin:$PATH"
 
-WORKDIR /app
+WORKDIR /app/data_loaders
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt pyproject.toml ./
-COPY app ./app
-COPY pipelines ./pipelines
-COPY graph ./graph
-COPY tests ./tests
+COPY data_loaders/requirements.txt data_loaders/pyproject.toml ./
+COPY data_loaders/app ./app
+COPY data_loaders/pipelines ./pipelines
+COPY data_loaders/graph ./graph
+COPY data_loaders/tests ./tests
+COPY embeddings ./embeddings
 
 RUN python -m venv /opt/venv \
     && pip install --upgrade pip \
     && pip install -r requirements.txt \
     && pip install -e .
 
-CMD ["python", "-m", "app.cli", "run", "all"]
+CMD ["python", "-m", "app.cli", "run", "phase4"]
