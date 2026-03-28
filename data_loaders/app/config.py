@@ -26,6 +26,24 @@ class Settings(BaseSettings):
     pubmed_year_min: int = Field(default=2015, alias="PUBMED_YEAR_MIN")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     string_download_enabled: bool = Field(default=False, alias="STRING_DOWNLOAD_ENABLED")
+    embedding_model_name: str = Field(
+        default="sentence-transformers/all-MiniLM-L6-v2",
+        alias="EMBEDDING_MODEL_NAME",
+    )
+    embedding_batch_size: int = Field(default=32, alias="EMBEDDING_BATCH_SIZE")
+    embedding_device: str = Field(default="cpu", alias="EMBEDDING_DEVICE")
+    embedding_max_nodes: int = Field(default=0, alias="EMBEDDING_MAX_NODES")
+    embedding_write_batch_size: int = Field(default=200, alias="EMBEDDING_WRITE_BATCH_SIZE")
+    vector_index_name_publication: str = Field(
+        default="publication_semantic_embedding_idx",
+        alias="VECTOR_INDEX_NAME_PUBLICATION",
+    )
+    vector_index_name_evidence: str = Field(
+        default="evidence_semantic_embedding_idx",
+        alias="VECTOR_INDEX_NAME_EVIDENCE",
+    )
+    vector_similarity_function: str = Field(default="cosine", alias="VECTOR_SIMILARITY_FUNCTION")
+    force_reembed: bool = Field(default=False, alias="FORCE_REEMBED")
 
     def resolve_data_dir(self) -> Path:
         return self.data_dir if self.data_dir.is_absolute() else PROJECT_ROOT / self.data_dir

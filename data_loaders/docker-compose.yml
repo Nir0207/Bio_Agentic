@@ -1,14 +1,14 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
-    working_dir: /app
+      context: ..
+      dockerfile: data_loaders/Dockerfile
+    working_dir: /app/data_loaders
     volumes:
-      - ./:/app
-      - ./data:/app/data
+      - ../:/app
+      - ./data:/app/data_loaders/data
     environment:
-      DATA_DIR: ${DATA_DIR:-/app/data}
+      DATA_DIR: ${DATA_DIR:-/app/data_loaders/data}
       # Default to a host Neo4j instance exposed on the custom project port.
       NEO4J_URI: ${NEO4J_URI:-bolt://host.docker.internal:7688}
       NEO4J_USERNAME: ${NEO4J_USERNAME:-neo4j}
@@ -23,6 +23,15 @@ services:
       PUBMED_YEAR_MIN: ${PUBMED_YEAR_MIN:-2015}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       STRING_DOWNLOAD_ENABLED: ${STRING_DOWNLOAD_ENABLED:-false}
+      EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-sentence-transformers/all-MiniLM-L6-v2}
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE:-32}
+      EMBEDDING_DEVICE: ${EMBEDDING_DEVICE:-cpu}
+      EMBEDDING_MAX_NODES: ${EMBEDDING_MAX_NODES:-0}
+      EMBEDDING_WRITE_BATCH_SIZE: ${EMBEDDING_WRITE_BATCH_SIZE:-200}
+      VECTOR_INDEX_NAME_PUBLICATION: ${VECTOR_INDEX_NAME_PUBLICATION:-publication_semantic_embedding_idx}
+      VECTOR_INDEX_NAME_EVIDENCE: ${VECTOR_INDEX_NAME_EVIDENCE:-evidence_semantic_embedding_idx}
+      VECTOR_SIMILARITY_FUNCTION: ${VECTOR_SIMILARITY_FUNCTION:-cosine}
+      FORCE_REEMBED: ${FORCE_REEMBED:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     entrypoint: ["python", "-m", "app.cli"]

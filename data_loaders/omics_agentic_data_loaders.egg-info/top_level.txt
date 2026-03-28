@@ -1,3 +1,4 @@
 app
+embeddings
 graph
 pipelines
