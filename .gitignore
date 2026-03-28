@@ -12,3 +12,4 @@ docs
 data
 README.md
 .venv
+*.env.example
