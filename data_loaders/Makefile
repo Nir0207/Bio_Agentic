@@ -1,6 +1,6 @@
 PYTHON ?= python
 
-.PHONY: install test download load transform neo4j-up neo4j-init neo4j-load neo4j-validate run docker-neo4j docker-up docker-run
+.PHONY: install test download load transform neo4j-up neo4j-init neo4j-load neo4j-validate run phase2 phase3 docker-neo4j docker-up docker-run
 
 install:
 	$(PYTHON) -m pip install -e ".[dev]"
@@ -34,6 +34,12 @@ neo4j-validate:
 
 run:
 	$(PYTHON) -m app.cli run all
+
+phase2:
+	$(PYTHON) -m app.cli run phase2
+
+phase3:
+	$(PYTHON) -m app.cli run phase3
 
 docker-neo4j:
 	docker compose --profile neo4j up -d neo4j
