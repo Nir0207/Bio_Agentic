@@ -1,0 +1,12 @@
+.vscode
+.env.example
+DS_Store
+.idea
+*.pyc
+__pycache__
+*.pyo
+.env
+docs
+*.egg
+data
+README.md
