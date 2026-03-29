@@ -17,7 +17,7 @@ from verification.app.constants import (
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(".env", "verification/.env"),
+        env_file=(".env", "../.env"),
         extra="ignore",
         populate_by_name=True,
         enable_decoding=False,

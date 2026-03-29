@@ -12,7 +12,7 @@ from .constants import SUPPORTED_LABEL_STRATEGIES, SUPPORTED_MODEL_TYPES, SUPPOR
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(".env", "modeling/.env"),
+        env_file=(".env", "../.env"),
         extra="ignore",
         populate_by_name=True,
     )
