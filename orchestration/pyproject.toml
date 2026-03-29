@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pharma-graph-orchestration"
+version = "0.1.0"
+description = "Standalone LangGraph orchestration phase for graph + semantic + score evidence assembly"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "neo4j>=5.24",
+  "langgraph>=0.2.60",
+  "pydantic>=2.8",
+  "pydantic-settings>=2.4",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+]
+
+[tool.setuptools]
+packages = [
+  "orchestration",
+  "orchestration.app",
+  "orchestration.nodes",
+  "orchestration.tools",
+  "orchestration.prompts",
+  "orchestration.schemas",
+  "orchestration.services",
+]
+
+[tool.setuptools.package-dir]
+orchestration = "."
+"orchestration.app" = "app"
+"orchestration.nodes" = "nodes"
+"orchestration.tools" = "tools"
+"orchestration.prompts" = "prompts"
+"orchestration.schemas" = "schemas"
+"orchestration.services" = "services"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
