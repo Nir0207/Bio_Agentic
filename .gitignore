@@ -13,3 +13,5 @@ data
 README.md
 .venv
 *.env.example
+*.env.*
+*.md
