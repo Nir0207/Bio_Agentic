@@ -1,0 +1,15 @@
+services:
+  answering:
+    build:
+      context: ..
+      dockerfile: answering/Dockerfile
+    working_dir: /workspace
+    env_file:
+      - .env
+    volumes:
+      - ../:/workspace
+      - ./payloads:/payloads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      ["python", "-m", "answering.app.cli", "answer", "sample"]
