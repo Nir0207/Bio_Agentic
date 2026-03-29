@@ -1,0 +1,201 @@
+{
+  "original_query": "Prioritize EGFR and ERBB2 for MAPK pathway follow-up",
+  "candidate_entities": [
+    {
+      "candidate_id": "EGFR",
+      "candidate_type": "Protein",
+      "display_name": "EGFR",
+      "aliases": ["Epidermal growth factor receptor"],
+      "metadata": {}
+    },
+    {
+      "candidate_id": "ERBB2",
+      "candidate_type": "Protein",
+      "display_name": "ERBB2",
+      "aliases": ["HER2"],
+      "metadata": {}
+    }
+  ],
+  "extracted_claims": [
+    {
+      "claim_id": "claim-egfr-mapk",
+      "claim_text": "EGFR participates in MAPK signaling.",
+      "claim_type": "pathway_participation",
+      "target_entity_ids": ["EGFR"],
+      "directness_level": "direct",
+      "referenced_citation_ids": ["PMID:12345"],
+      "referenced_score_ids": [],
+      "critical": false
+    },
+    {
+      "claim_id": "claim-egfr-erbb2",
+      "claim_text": "EGFR and ERBB2 have linked signaling behavior in the evidence bundle.",
+      "claim_type": "entity_association",
+      "target_entity_ids": ["EGFR", "ERBB2"],
+      "directness_level": "indirect",
+      "referenced_citation_ids": ["PMID:67890"],
+      "referenced_score_ids": [],
+      "critical": false
+    },
+    {
+      "claim_id": "claim-erbb2-higher",
+      "claim_text": "ERBB2 ranks higher than EGFR on target priority score.",
+      "claim_type": "ranking_claim",
+      "target_entity_ids": ["ERBB2", "EGFR"],
+      "directness_level": "unspecified",
+      "referenced_citation_ids": [],
+      "referenced_score_ids": ["ERBB2:target_priority"],
+      "critical": false
+    }
+  ],
+  "claim_verdicts": [
+    {
+      "claim": {
+        "claim_id": "claim-egfr-mapk",
+        "claim_text": "EGFR participates in MAPK signaling.",
+        "claim_type": "pathway_participation",
+        "target_entity_ids": ["EGFR"],
+        "directness_level": "direct",
+        "referenced_citation_ids": ["PMID:12345"],
+        "referenced_score_ids": [],
+        "critical": false
+      },
+      "graph_check": {
+        "claim_id": "claim-egfr-mapk",
+        "graph_supported": "true",
+        "supporting_graph_evidence_ids": ["path-egfr-mapk"],
+        "path_count": 1,
+        "support_notes": ["Direct pathway edge found"],
+        "unsupported_reason": null,
+        "direct_support": true,
+        "indirect_support": false
+      },
+      "citation_check": {
+        "claim_id": "claim-egfr-mapk",
+        "citation_supported": "true",
+        "supporting_citation_ids": ["PMID:12345"],
+        "missing_citation_reason": null
+      },
+      "score_check": {
+        "claim_id": "claim-egfr-mapk",
+        "score_supported": "partial",
+        "supporting_score_blocks": [
+          {
+            "candidate_id": "EGFR",
+            "score_name": "target_priority",
+            "score_value": 0.91
+          }
+        ],
+        "score_notes": ["Score is relevant but not required for pathway claim"]
+      },
+      "final_status": "supported",
+      "reasons": ["Graph and publication evidence both support the claim"]
+    },
+    {
+      "claim": {
+        "claim_id": "claim-egfr-erbb2",
+        "claim_text": "EGFR and ERBB2 have linked signaling behavior in the evidence bundle.",
+        "claim_type": "entity_association",
+        "target_entity_ids": ["EGFR", "ERBB2"],
+        "directness_level": "indirect",
+        "referenced_citation_ids": ["PMID:67890"],
+        "referenced_score_ids": [],
+        "critical": false
+      },
+      "graph_check": {
+        "claim_id": "claim-egfr-erbb2",
+        "graph_supported": "partial",
+        "supporting_graph_evidence_ids": ["path-egfr-erbb2"],
+        "path_count": 1,
+        "support_notes": ["Association edge present without direct causality"],
+        "unsupported_reason": null,
+        "direct_support": false,
+        "indirect_support": true
+      },
+      "citation_check": {
+        "claim_id": "claim-egfr-erbb2",
+        "citation_supported": "true",
+        "supporting_citation_ids": ["PMID:67890"],
+        "missing_citation_reason": null
+      },
+      "score_check": {
+        "claim_id": "claim-egfr-erbb2",
+        "score_supported": "partial",
+        "supporting_score_blocks": [],
+        "score_notes": ["No direct rank signal for pair claim"]
+      },
+      "final_status": "partially_supported",
+      "reasons": ["Evidence supports association, but direct mechanism is unresolved"]
+    },
+    {
+      "claim": {
+        "claim_id": "claim-erbb2-higher",
+        "claim_text": "ERBB2 ranks higher than EGFR on target priority score.",
+        "claim_type": "ranking_claim",
+        "target_entity_ids": ["ERBB2", "EGFR"],
+        "directness_level": "unspecified",
+        "referenced_citation_ids": [],
+        "referenced_score_ids": ["ERBB2:target_priority"],
+        "critical": false
+      },
+      "graph_check": {
+        "claim_id": "claim-erbb2-higher",
+        "graph_supported": "false",
+        "supporting_graph_evidence_ids": [],
+        "path_count": 0,
+        "support_notes": [],
+        "unsupported_reason": "No graph pattern proving ranking statement",
+        "direct_support": false,
+        "indirect_support": false
+      },
+      "citation_check": {
+        "claim_id": "claim-erbb2-higher",
+        "citation_supported": "false",
+        "supporting_citation_ids": [],
+        "missing_citation_reason": "No supporting publication tied to this ranking claim"
+      },
+      "score_check": {
+        "claim_id": "claim-erbb2-higher",
+        "score_supported": "false",
+        "supporting_score_blocks": [],
+        "score_notes": ["Observed model scores do not support this ordering"]
+      },
+      "final_status": "unsupported",
+      "reasons": ["Ranking claim contradicted by provided model score evidence"]
+    }
+  ],
+  "overall_verdict": "approved_with_caveats",
+  "overall_confidence": 0.78,
+  "supporting_evidence_index": {
+    "claim-egfr-mapk": ["path-egfr-mapk", "PMID:12345", "EGFR:target_priority"],
+    "claim-egfr-erbb2": ["path-egfr-erbb2", "PMID:67890"],
+    "claim-erbb2-higher": []
+  },
+  "missing_evidence_index": {
+    "claim-egfr-mapk": [],
+    "claim-egfr-erbb2": ["graph_support"],
+    "claim-erbb2-higher": ["graph_support", "citation_support", "score_support"]
+  },
+  "warnings": [
+    "One ranking claim is unsupported and excluded from final answer statements"
+  ],
+  "review_status": {
+    "status": "approved_with_caveats",
+    "triggered": true,
+    "reasons": ["Contains partially supported claim"],
+    "pending_claim_ids": [],
+    "allowed_actions": ["approve", "continue_with_caveats"],
+    "action_taken": "continue_with_caveats",
+    "edits_applied": {}
+  },
+  "final_verified_payload_version": "1.0.0",
+  "confidence_summary": {
+    "overall_confidence": 0.78,
+    "unsupported_claim_count": 1,
+    "partially_supported_claim_count": 1,
+    "missing_citation_count": 1,
+    "warnings": [
+      "One ranking claim is unsupported and excluded from final answer statements"
+    ]
+  }
+}

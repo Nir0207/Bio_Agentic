@@ -15,3 +15,4 @@ README.md
 *.env.example
 *.env.*
 *.md
+answering/.env.example
