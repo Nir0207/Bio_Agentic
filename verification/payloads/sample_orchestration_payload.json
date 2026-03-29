@@ -1,0 +1,138 @@
+{
+  "user_query": "Prioritize EGFR and ERBB2 for MAPK pathway follow-up",
+  "normalized_query": "prioritize egfr and erbb2 for mapk pathway follow-up",
+  "candidate_entities": [
+    {
+      "candidate_id": "EGFR",
+      "candidate_type": "Protein",
+      "display_name": "EGFR",
+      "aliases": ["Epidermal growth factor receptor"]
+    },
+    {
+      "candidate_id": "ERBB2",
+      "candidate_type": "Protein",
+      "display_name": "ERBB2",
+      "aliases": ["HER2"]
+    }
+  ],
+  "graph_evidence": [
+    {
+      "path_id": "path-egfr-mapk",
+      "candidate_id": "EGFR",
+      "candidate_type": "Protein",
+      "path_summary": "EGFR participates in MAPK signaling.",
+      "nodes": [
+        {"node_id": "EGFR", "node_labels": ["Protein"], "display_name": "EGFR"},
+        {"node_id": "MAPK_PATHWAY", "node_labels": ["Pathway"], "display_name": "MAPK pathway"}
+      ],
+      "edges": [
+        {
+          "edge_id": "edge-egfr-mapk",
+          "relation_type": "PARTICIPATES_IN",
+          "source_node_id": "EGFR",
+          "target_node_id": "MAPK_PATHWAY",
+          "confidence": 0.82,
+          "source_system": "reactome"
+        }
+      ],
+      "relation_types": ["PARTICIPATES_IN"],
+      "confidence": 0.82,
+      "source_metadata": {"path_id": "path-egfr-mapk"}
+    },
+    {
+      "path_id": "path-egfr-erbb2",
+      "candidate_id": "EGFR",
+      "candidate_type": "Protein",
+      "path_summary": "EGFR is associated with ERBB2 in signaling network context.",
+      "nodes": [
+        {"node_id": "EGFR", "node_labels": ["Protein"], "display_name": "EGFR"},
+        {"node_id": "ERBB2", "node_labels": ["Protein"], "display_name": "ERBB2"}
+      ],
+      "edges": [
+        {
+          "edge_id": "edge-egfr-erbb2",
+          "relation_type": "INTERACTS_WITH",
+          "source_node_id": "EGFR",
+          "target_node_id": "ERBB2",
+          "confidence": 0.74,
+          "source_system": "string"
+        }
+      ],
+      "relation_types": ["INTERACTS_WITH"],
+      "confidence": 0.74,
+      "source_metadata": {"path_id": "path-egfr-erbb2"}
+    }
+  ],
+  "semantic_evidence": [
+    {
+      "node_id": "EVI-001",
+      "node_type": "Evidence",
+      "score": 0.93,
+      "snippet": "EGFR activation contributes to MAPK pathway signaling in tumor models.",
+      "title": "EGFR-MAPK evidence",
+      "citation_handle": "PMID:12345",
+      "linked_candidate_ids": ["EGFR"]
+    },
+    {
+      "node_id": "EVI-002",
+      "node_type": "Evidence",
+      "score": 0.88,
+      "snippet": "EGFR and ERBB2 show related downstream signaling behavior.",
+      "title": "EGFR-ERBB2 association",
+      "citation_handle": "PMID:67890",
+      "linked_candidate_ids": ["EGFR", "ERBB2"]
+    }
+  ],
+  "model_scores": [
+    {
+      "candidate_id": "EGFR",
+      "score_name": "target_priority",
+      "score_value": 0.91,
+      "model_name": "ranker_v2",
+      "model_version": "2.1",
+      "run_id": "run-egfr-01",
+      "timestamp": "2026-03-01T00:00:00Z"
+    },
+    {
+      "candidate_id": "ERBB2",
+      "score_name": "target_priority",
+      "score_value": 0.82,
+      "model_name": "ranker_v2",
+      "model_version": "2.1",
+      "run_id": "run-erbb2-01",
+      "timestamp": "2026-03-01T00:00:00Z"
+    }
+  ],
+  "provenance": [
+    {
+      "claim_id": "EGFR",
+      "source_system": "publication",
+      "source_ref": "PMID:12345",
+      "metadata": {"source_node": "Publication"}
+    },
+    {
+      "claim_id": "EGFR_ERBB2",
+      "source_system": "publication",
+      "source_ref": "PMID:67890",
+      "metadata": {"source_node": "Publication"}
+    }
+  ],
+  "evidence_bundle": [
+    {
+      "candidate_id": "EGFR",
+      "candidate_type": "Protein",
+      "summary": "EGFR participates in MAPK signaling and has stronger modeled priority than ERBB2.",
+      "citation_ids": ["PMID:12345", "PMID:67890"]
+    },
+    {
+      "candidate_id": "ERBB2",
+      "candidate_type": "Protein",
+      "summary": "ERBB2 has network-linked evidence with EGFR but lower ranking score.",
+      "citation_ids": ["PMID:67890"]
+    }
+  ],
+  "draft_answer_text": "EGFR participates in the MAPK pathway and is associated with ERBB2. EGFR ranks higher than ERBB2 by target_priority score, supported by PMID:12345 and PMID:67890.",
+  "query_metadata": {
+    "high_stakes": false
+  }
+}
