@@ -5,7 +5,7 @@ services:
       dockerfile: verification/Dockerfile
     working_dir: /workspace
     env_file:
-      - .env
+      - ../.env
     volumes:
       - ../:/workspace
       - ./payloads:/payloads

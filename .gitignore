@@ -3,13 +3,10 @@
 .DS_Store
 
 .env
+**/.env
 .env.*
-!.env.example
-!backend/.env.example
-!frontend/.env.example
-*.env.example
-!backend/.env.example
-!frontend/.env.example
+**/.env.*
+!/.env.example
 
 *.pyc
 *.pyo
@@ -28,8 +25,7 @@ docs/
 data_loaders/pipelines/outputs/
 
 *.md
-!backend/README.md
-!frontend/README.md
+!README.md
 
 data/
 backend/data/auth.db

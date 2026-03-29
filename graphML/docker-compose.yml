@@ -5,7 +5,7 @@ services:
       dockerfile: graphML/Dockerfile
     working_dir: /workspace
     env_file:
-      - .env
+      - ../.env
     volumes:
       - ../:/workspace
     extra_hosts:

@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     # Keep env parsing compatible with CSV-style list vars in .env/.env.example
     # (for example: GDS_NODE_LABELS=Protein,Pathway) instead of requiring JSON arrays.
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "../.env"),
         extra="ignore",
         populate_by_name=True,
         enable_decoding=False,

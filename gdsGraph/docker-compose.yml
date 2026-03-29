@@ -5,7 +5,7 @@ services:
       dockerfile: gdsGraph/Dockerfile
     working_dir: /app/gdsGraph
     env_file:
-      - .env
+      - ../.env
     volumes:
       - ../:/app
     extra_hosts:

@@ -10,7 +10,7 @@ from .constants import DEFAULT_DATA_DIR, PROJECT_ROOT
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore", populate_by_name=True)
+    model_config = SettingsConfigDict(env_file=(".env", "../.env"), extra="ignore", populate_by_name=True)
 
     data_dir: Path = Field(default=DEFAULT_DATA_DIR, alias="DATA_DIR")
     neo4j_uri: str = Field(default="bolt://localhost:7688", alias="NEO4J_URI")
