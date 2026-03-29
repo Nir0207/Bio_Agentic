@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.routes import answering, auth, health, orchestration, verification
 from app.core.config import get_settings
@@ -16,6 +17,13 @@ configure_logging(settings.log_level)
 
 app = FastAPI(title=settings.app_name, debug=settings.debug)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins_list,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 app.add_middleware(RequestContextMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 
