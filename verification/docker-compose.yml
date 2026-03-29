@@ -1,0 +1,15 @@
+services:
+  verification:
+    build:
+      context: ..
+      dockerfile: verification/Dockerfile
+    working_dir: /workspace
+    env_file:
+      - .env
+    volumes:
+      - ../:/workspace
+      - ./payloads:/payloads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      ["python", "-m", "verification.app.cli", "verify", "sample"]

@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pharma-graph-verification"
+version = "0.1.0"
+description = "Standalone verification phase for claim-by-claim evidence validation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.8",
+  "pydantic-settings>=2.4",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+]
+
+[tool.setuptools]
+packages = [
+  "verification",
+  "verification.app",
+  "verification.nodes",
+  "verification.prompts",
+  "verification.schemas",
+  "verification.services",
+]
+
+[tool.setuptools.package-dir]
+verification = "."
+"verification.app" = "app"
+"verification.nodes" = "nodes"
+"verification.prompts" = "prompts"
+"verification.schemas" = "schemas"
+"verification.services" = "services"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
