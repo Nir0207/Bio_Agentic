@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     neo4j_database: str = 'neo4j'
 
     log_level: str = 'INFO'
+    cors_allow_origins: str = 'http://localhost:5173,http://127.0.0.1:5173'
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_allow_origins.split(',') if origin.strip()]
 
 
 @lru_cache
