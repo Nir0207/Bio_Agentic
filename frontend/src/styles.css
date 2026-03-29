@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface-gradient: linear-gradient(135deg, #ecfeff 0%, #f8fafc 40%, #e2e8f0 100%);
+}
+
+body {
+  @apply font-body text-slate-800;
+  background: var(--surface-gradient);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
